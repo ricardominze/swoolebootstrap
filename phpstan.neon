@@ -1,0 +1,65 @@
+includes:
+    #- phpstan-baseline.neon
+    #- vendor/phpstan/phpstan/conf/bleedingEdge.neon  # Usa as configurações mais recentes do PHPStan
+parameters:
+    level: max  # Define o nível máximo de análise
+    paths:
+        - src  # Caminho do código-fonte a ser analisado
+    
+    ########################################################
+    # Configuração do baseline para ignorar erros conhecidos
+    ########################################################
+
+    # baseline: phpstan-baseline.neon
+    
+    ###############################################################
+    # Análise de arquivos que não seguem padrões de extensão comuns
+    ###############################################################
+
+    fileExtensions:
+        - php
+    
+    ################################################
+    # Define diretórios e arquivos a serem ignorados
+    ################################################
+
+    # excludePaths:
+        # - src/api/*
+        # - src/assets/*
+        # - src/infra/*
+    
+    ############################################
+    # Especifica a versão do PHP alvo da análise
+    ############################################
+
+    phpVersion: 80400  # PHP 8.4
+    
+    ########################################
+    # Configuração de memória e tempo limite
+    ########################################
+
+    parallel:
+        processTimeout: 60.00
+        maximumNumberOfProcesses: 6
+    
+    ###################################
+    # Configuração de regras e extensão
+    ###################################
+
+    reportUnmatchedIgnoredErrors: true
+    scanDirectories:
+        - src
+    
+    ###################################
+    # Habilita verificações específicas
+    ###################################
+
+    checkFunctionArgumentTypes: true
+    checkNullables: true
+    checkUnionTypes: true
+    
+    ############################
+    # Configuração de relatórios
+    ############################
+    
+    errorFormat: table  # Pode ser table, raw, json, checkstyle, etc.
