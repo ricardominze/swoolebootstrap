@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__ . '/vendor/autoload.php';
+
 use Swoole\Http\Server;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
@@ -8,8 +10,6 @@ use App\Infra\Router\Router;
 use App\Api\CustomerController;
 use App\Core\Domain\Customer\Service\CustomerService;
 use App\Infra\Adapter\CustomerRepository;
-
-require __DIR__ . '/vendor/autoload.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -21,12 +21,13 @@ $router = new Router();
 //$router->useMiddleware((new App\Infra\Middleware\AuthMiddleware())->handler());
 
 //Database
+
 $db = new \PDO($_ENV['DBSTRING'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
 
 //Handlers
 
 $customerController = new CustomerController(new CustomerService(new CustomerRepository($db)));
-$customerController->MakeHandlers($router);
+$customerController->makeHandlers($router);
 
 //Ativa todos os hooks de coroutinas antes de iniciar o servidor
 Swoole\Runtime::enableCoroutine(SWOOLE_HOOK_ALL);

@@ -40,7 +40,7 @@ portl:
 
 run:
 	@echo "Executando App \e[1;34mSwoole\e[0m."
-	@php index.php
+	@php main.php
 
 docl:
 	@echo "Conatiners Ativos..."

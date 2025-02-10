@@ -19,11 +19,6 @@ class Router
     private array $routes = [];
     private array $middlewares = [];
 
-    public function getRoutes(): array
-    {
-        return $this->routes;
-    }
-
     public function add(string $path, callable $callback, array $middlewares = []): void
     {
         $pattern = $this->convertToRegex($path);
@@ -51,6 +46,11 @@ class Router
     {
         preg_match_all('/\{([a-zA-Z_][a-zA-Z0-9_]*)(?::([^}]+))?\}/', $path, $matches);
         return $matches[1] ?? [];
+    }
+
+    public function useMiddleware(callable $middleware): void
+    {
+        $this->middlewares[] = $middleware;
     }
 
     public function resolve(Request &$request, Response $response): void
