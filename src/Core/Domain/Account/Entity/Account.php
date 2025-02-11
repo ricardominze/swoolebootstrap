@@ -13,7 +13,7 @@ use App\Core\Domain\Account\Err\AccountErrorInsufficientBalance;
 class Account {
  
   public function __construct(
-    public int $id,
+    public int|null $id,
     public int $idCustomer,
     public string $typeAccount,
     public float $balance,

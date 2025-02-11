@@ -35,7 +35,7 @@ class AccountUseCaseOpen
       $account->balance = 150.00;
     }
 
-    $this->repository->Save($account);
+    $this->repository->save($account);
 
     return null;
   }

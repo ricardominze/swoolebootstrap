@@ -7,9 +7,12 @@ use Swoole\Http\Request;
 use Swoole\Http\Response;
 
 use App\Infra\Router\Router;
+use App\Api\AccountController;
+use App\Infra\Adapter\AccountRepository;
+use App\Core\Domain\Account\Service\AccountService;
 use App\Api\CustomerController;
-use App\Core\Domain\Customer\Service\CustomerService;
 use App\Infra\Adapter\CustomerRepository;
+use App\Core\Domain\Customer\Service\CustomerService;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -25,6 +28,9 @@ $router = new Router();
 $db = new \PDO($_ENV['DBSTRING'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
 
 //Handlers
+
+$accountController = new AccountController(new AccountService(new AccountRepository($db)));
+$accountController->makeHandlers($router);
 
 $customerController = new CustomerController(new CustomerService(new CustomerRepository($db)));
 $customerController->makeHandlers($router);

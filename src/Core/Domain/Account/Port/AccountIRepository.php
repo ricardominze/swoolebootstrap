@@ -8,6 +8,6 @@ use App\Core\Domain\Account\Entity\Account;
 
 interface AccountIRepository
 {
-    public function Get(int $id): Account|null;
-    public function Save(Account $account): Account|null;
+    public function get(int $id): Account|null;
+    public function save(Account $account): Account|null;
 }

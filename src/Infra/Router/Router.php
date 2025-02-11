@@ -32,7 +32,6 @@ class Router
 
     private function convertToRegex(string $path): string
     {
-        // Converte parâmetros para regex no estilo GorillaMux
         $pattern = preg_replace_callback('/\{([a-zA-Z_][a-zA-Z0-9_]*)(?::([^}]+))?\}/', function ($matches) {
             $paramName = $matches[1];
             $paramRegex = $matches[2] ?? '[^/]+'; // Se não tiver regex, assume padrão "qualquer coisa até /"
@@ -41,6 +40,22 @@ class Router
 
         return "#^" . $pattern . "$#";
     }
+
+    // private function convertToRegex(string $path): string
+    // {
+    //     $pattern = preg_replace_callback('/\{([a-zA-Z_][a-zA-Z0-9_]*)\:(.*?)\}/', function ($matches) {
+    //         $paramName = $matches[1];
+    //         $paramRegex = $matches[2];
+    //         return '(?P<' . $paramName . '>' . $paramRegex . ')';
+    //     }, $path);
+    
+    //     $pattern = preg_replace_callback('/\{([a-zA-Z_][a-zA-Z0-9_]*)\}/', function ($matches) {
+    //         $paramName = $matches[1];
+    //         return '(?P<' . $paramName . '>[^/]+)';
+    //     }, $pattern);
+    
+    //     return "#^" . $pattern . "$#";
+    // }
 
     private function extractParamNames(string $path): array
     {
