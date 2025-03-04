@@ -54,11 +54,11 @@ stop:
 	@docker stop $(CONTAINER) || true
 
 rundock:
-	@echo "Executando Containers(Postgres, PgAdmin)..."
+	@echo "Executando Containers(Postgres, PgAdmin, Jaeger, Prometheus, Grafana)..."
 	@docker compose -f ./docker/docker-compose-run.yaml up -d
 
 stopdock:	
-	@echo "Parando Containers(Jaeger, Prometheus, Grafana)..."
+	@echo "Parando Containers(Postgres, PgAdmin, Jaeger, Prometheus, Grafana)..."
 	@docker compose -f ./docker/docker-compose-run.yaml down
 
 pest:
@@ -92,4 +92,3 @@ pstanrep:
 cdump:
 	@echo "\n\e[1;32mComposer\e[0m: dump"
 	@composer dump-autoload -o & $(call spinner)
-	

@@ -41,22 +41,6 @@ class Router
         return "#^" . $pattern . "$#";
     }
 
-    // private function convertToRegex(string $path): string
-    // {
-    //     $pattern = preg_replace_callback('/\{([a-zA-Z_][a-zA-Z0-9_]*)\:(.*?)\}/', function ($matches) {
-    //         $paramName = $matches[1];
-    //         $paramRegex = $matches[2];
-    //         return '(?P<' . $paramName . '>' . $paramRegex . ')';
-    //     }, $path);
-    
-    //     $pattern = preg_replace_callback('/\{([a-zA-Z_][a-zA-Z0-9_]*)\}/', function ($matches) {
-    //         $paramName = $matches[1];
-    //         return '(?P<' . $paramName . '>[^/]+)';
-    //     }, $pattern);
-    
-    //     return "#^" . $pattern . "$#";
-    // }
-
     private function extractParamNames(string $path): array
     {
         preg_match_all('/\{([a-zA-Z_][a-zA-Z0-9_]*)(?::([^}]+))?\}/', $path, $matches);

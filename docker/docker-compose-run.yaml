@@ -37,52 +37,53 @@ services:
     networks:
       - swoolebootstrap-network
 
-  # jaeger:
-  #   image: jaegertracing/all-in-one:1.47
-  #   container_name: jaeger
-  #   ports:
-  #     - "16686:16686" # UI do Jaeger
-  #     - "14268:14268" # OTLP HTTP
-  #     - "4317:4317"   # OTLP gRPC
-  #     - "4318:4318"   # OTLP HTTP (compatível com OpenTelemetry Collector)
-  #   environment:
-  #     - COLLECTOR_OTLP_ENABLED=true
-  #     #- COLLECTOR_OTLP_HTTP_PORT=4318
-  #     #- COLLECTOR_OTLP_GRPC_PORT=4317
-  #   networks:
-  #     - swoolebootstrap-network
+  jaeger:
+    image: jaegertracing/all-in-one:1.47
+    container_name: jaeger
+    ports:
+      - "16686:16686" # UI do Jaeger
+      - "14268:14268" # OTLP HTTP
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP (compatível com OpenTelemetry Collector)
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      #- COLLECTOR_OTLP_HTTP_PORT=4318
+      #- COLLECTOR_OTLP_GRPC_PORT=4317
+    networks:
+      - swoolebootstrap-network
 
-  # prometheus:
-  #   image: prom/prometheus:latest
-  #   container_name: prometheus
-  #   volumes:
-  #     - ./prometheus.yml:/etc/prometheus/prometheus.yml
-  #   ports:
-  #     - "9090:9090"  # Interface web do Prometheus
-  #   command:
-  #     - "--config.file=/etc/prometheus/prometheus.yml"
-  #   networks:
-  #     - swoolebootstrap-network
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"  # Interface web do Prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - --web.enable-admin-api      
+    networks:
+      - swoolebootstrap-network
 
-  # grafana:
-  #   image: grafana/grafana:latest
-  #   container_name: grafana
-  #   ports:
-  #     - "3000:3000"  # Interface web do Grafana
-  #   environment:
-  #     - GF_SECURITY_ADMIN_USER=admin
-  #     - GF_SECURITY_ADMIN_PASSWORD=admin
-  #   depends_on:
-  #     - prometheus
-  #     - jaeger
-  #   volumes:
-  #     - grafana-data:/var/lib/grafana
-  #   networks:
-  #     - swoolebootstrap-network
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"  # Interface web do Grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+      - jaeger
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - swoolebootstrap-network
 
 volumes:
   pgdata:
-  # grafana-data:
+  grafana-data:
 
 networks:
   swoolebootstrap-network:

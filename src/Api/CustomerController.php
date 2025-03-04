@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Api;
 
+use Swoole\Coroutine;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use App\Infra\Router\Router;
+use App\Infra\Telemetry\Telemetry;
 use App\Core\Valueobject\Address;
 use App\Core\Domain\Customer\Entity\Customer;
 use App\Core\Domain\Customer\Service\CustomerService;
+
+use function Co\go;
+use function Co\defer;
 
 class CustomerController
 {
@@ -22,13 +27,59 @@ class CustomerController
 
   public function makeHandlers(Router &$router): void
   {
+    $router->add('/customer/index', $this->index());
     $router->add('/customer/{id:[0-9]+}', $this->get());
     $router->add('/customer/save', $this->save());
+  }
+
+  public function index(): callable 
+  {
+    return function (Request &$request, Response $response) {
+    
+      go(function(){
+
+        defer(function(){
+          echo "\nterminou o primeiro";
+        });
+
+        echo "\nEnviando e-mail";
+        Coroutine::sleep(5); //Simula uma operação assíncrona
+        echo "\n\nE-mail enviado!";
+
+      });
+
+      go(function(){
+
+        defer(function(){
+          echo "\nterminou o segundo";
+        });
+
+        echo "\nPreparando pedido";
+        Coroutine::sleep(10); //Simula uma operação assíncrona
+        echo "\n\nPedido finalizado!";
+      });
+
+      $request->getContent();
+      $response->end("atividade concluida!");
+    };
   }
 
   public function get(): callable
   {
     return function (Request &$request, Response $response) {
+
+      $tracer = Telemetry::getTracer('CUSTOMER');
+      $span = $tracer->spanBuilder('/customer/{id:[0-9]+}')->startSpan();
+      
+      try
+      {
+          $span->setAttribute('http.method', 'GET');
+          $span->setAttribute('net.protocol.version', '1.1');
+      }
+      finally
+      {
+          $span->end();
+      }
 
       $response->header("Content-Type", "application/json; charset=utf-8");
 

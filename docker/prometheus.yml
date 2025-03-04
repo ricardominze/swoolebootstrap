@@ -1,0 +1,18 @@
+global:
+  scrape_interval: 10s  # Intervalo para capturar métricas
+
+scrape_configs:
+  # Configuração para capturar métricas da aplicação Golang
+  - job_name: 'swoolebootstrap'
+    static_configs:
+     - targets: ['172.17.0.1:9501']
+
+  # Configuração para capturar métricas do próprio Prometheus
+  # - job_name: 'prometheus'
+  #   static_configs:
+  #     - targets: ['prometheus:9090']
+
+  # Configuração para capturar métricas de outros serviços (exemplo)
+  # - job_name: 'jaeger'
+  #   static_configs:
+  #     - targets: ['jaeger:14268']
